@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Cartera de Inversión</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e2d45;
+    --accent: #3b82f6;
+    --accent2: #60a5fa;
+    --green: #22c55e;
+    --red: #ef4444;
+    --yellow: #f59e0b;
+    --text: #f1f5f9;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  .logo-text {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .logo-sub {
+    font-size: 11px;
+    color: var(--text3);
+    font-weight: 400;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .badge-demo {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--yellow);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .last-update {
+    font-size: 11px;
+    color: var(--text3);
+    font-family: var(--mono);
+  }
+
+  /* SUMMARY CARDS */
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    padding: 20px 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .card-label {
+    font-size: 11px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .card-value {
+    font-size: 22px;
+    font-weight: 700;
+    font-family: var(--mono);
+    letter-spacing: -1px;
+  }
+
+  .card-sub {
+    font-size: 12px;
+    margin-top: 4px;
+    font-family: var(--mono);
+  }
+
+  .green { color: var(--green); }
+  .red { color: var(--red); }
+  .blue { color: var(--accent2); }
+
+  /* MAIN */
+  main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px 40px;
+  }
+
+  /* TOOLBAR */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .toolbar-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .toolbar-right {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    font-family: var(--sans);
+    transition: all 0.15s;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+  }
+
+  .btn-primary:hover { background: #2563eb; }
+
+  .btn-secondary {
+    background: var(--surface2);
+    color: var(--text2);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover { background: var(--border); color: var(--text); }
+
+  .btn-danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--red);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+
+  .btn-danger:hover { background: rgba(239, 68, 68, 0.25); }
+
+  /* TABLE */
+  .table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    white-space: nowrap;
+  }
+
+  th.right { text-align: right; }
+  th.center { text-align: center; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface2); }
+
+  td {
+    padding: 14px 16px;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+
+  td.right { text-align: right; }
+  td.center { text-align: center; }
+
+  /* STOCK NAME */
+  .stock-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .stock-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #1e3a5f, #1e4080);
+    color: var(--accent2);
+  }
+
+  .stock-ticker {
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+  }
+
+  .stock-full {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 2px;
+  }
+
+  /* NUMBERS */
+  .mono { font-family: var(--mono); }
+
+  .price-current {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .price-change {
+    font-family: var(--mono);
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  /* P&L BADGE */
+  .pl-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .pl-positive {
+    background: rgba(34, 197, 94, 0.12);
+    color: var(--green);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+  }
+
+  .pl-negative {
+    background: rgba(239, 68, 68, 0.12);
+    color: var(--red);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+  }
+
+  .pl-neutral {
+    background: rgba(148, 163, 184, 0.1);
+    color: var(--text2);
+    border: 1px solid var(--border);
+  }
+
+  /* LOADING SPINNER */
+  .spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: inline-block;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* SPARKLINE */
+  .sparkline {
+    width: 80px;
+    height: 32px;
+  }
+
+  /* ACTIONS */
+  .action-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text3);
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: var(--sans);
+  }
+
+  .action-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .action-delete {
+    color: var(--red);
+    border-color: transparent;
+  }
+
+  .action-delete:hover { border-color: var(--red); background: rgba(239,68,68,0.1); }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text3);
+  }
+
+  .empty-icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-title { font-size: 18px; font-weight: 600; color: var(--text2); margin-bottom: 8px; }
+  .empty-sub { font-size: 14px; margin-bottom: 24px; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+  }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 460px;
+    padding: 28px;
+  }
+
+  .modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .modal-sub {
+    font-size: 13px;
+    color: var(--text3);
+    margin-bottom: 24px;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text2);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  input, select {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: var(--sans);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  input:focus, select:focus { border-color: var(--accent); }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .modal-actions .btn { flex: 1; padding: 11px; font-size: 14px; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 14px;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    animation: slideIn 0.3s ease;
+    max-width: 320px;
+  }
+
+  @keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    header { padding: 12px 16px; }
+    .summary { padding: 16px; gap: 10px; }
+    .summary { grid-template-columns: repeat(2, 1fr); }
+    main { padding: 0 16px 40px; }
+    th, td { padding: 10px 12px; }
+    .sparkline { display: none; }
+    .stock-full { display: none; }
+    th.hide-mobile, td.hide-mobile { display: none; }
+    .card-value { font-size: 18px; }
+  }
+
+  @media (max-width: 480px) {
+    .summary { grid-template-columns: 1fr 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  .pulse {
+    animation: pulse 1s ease;
+  }
+
+  @keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.4; }
+    100% { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">📈</div>
+    <div>
+      <div class="logo-text">Mi Cartera</div>
+      <div class="logo-sub">Seguimiento de inversiones</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="badge-demo">💰 DEMO</span>
+    <span class="last-update" id="lastUpdate">--:--:--</span>
+  </div>
+</header>
+
+<!-- SUMMARY CARDS -->
+<div class="summary">
+  <div class="card">
+    <div class="card-label">💼 Capital Invertido</div>
+    <div class="card-value blue" id="totalInvested">€0.00</div>
+    <div class="card-sub" style="color:var(--text3)">Total en posiciones</div>
+  </div>
+  <div class="card">
+    <div class="card-label">📊 Valor Actual</div>
+    <div class="card-value" id="totalValue">€0.00</div>
+    <div class="card-sub" style="color:var(--text3)">A precio de mercado</div>
+  </div>
+  <div class="card">
+    <div class="card-label">💰 Ganancias / Pérdidas</div>
+    <div class="card-value" id="totalPL">€0.00</div>
+    <div class="card-sub" id="totalPLPct" style="color:var(--text3)">0.00%</div>
+  </div>
+  <div class="card">
+    <div class="card-label">📋 Posiciones</div>
+    <div class="card-value blue" id="totalPositions">0</div>
+    <div class="card-sub" style="color:var(--text3)">Acciones en cartera</div>
+  </div>
+</div>
+
+<!-- MAIN TABLE -->
+<main>
+  <div class="toolbar">
+    <div class="toolbar-title">Mis Posiciones</div>
+    <div class="toolbar-right">
+      <button class="btn btn-secondary" onclick="refreshAll()">🔄 Actualizar</button>
+      <button class="btn btn-primary" onclick="openModal()">+ Añadir acción</button>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Acción</th>
+          <th class="right">Precio actual</th>
+          <th class="right hide-mobile">Cantidad</th>
+          <th class="right hide-mobile">Invertido</th>
+          <th class="right">Valor actual</th>
+          <th class="right">P&L</th>
+          <th class="center hide-mobile">Gráfico</th>
+          <th class="center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!-- Filled by JS -->
+      </tbody>
+    </table>
+    <div id="emptyState" class="empty-state">
+      <div class="empty-icon">📭</div>
+      <div class="empty-title">Tu cartera está vacía</div>
+      <div class="empty-sub">Añade tu primera acción para empezar a seguir tus inversiones</div>
+      <button class="btn btn-primary" onclick="openModal()">+ Añadir primera acción</button>
+    </div>
+  </div>
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" style="display:none">
+  <div class="modal">
+    <div class="modal-title">➕ Añadir posición</div>
+    <div class="modal-sub">Introduce los datos de tu inversión</div>
+
+    <div class="form-group">
+      <label>Símbolo de la acción *</label>
+      <input type="text" id="inputSymbol" placeholder="Ej: AAPL, TSLA, MSFT, NVDA..." style="text-transform:uppercase">
+    </div>
+
+    <div class="form-group">
+      <label>Nombre completo (opcional)</label>
+      <input type="text" id="inputName" placeholder="Ej: Apple Inc.">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Cantidad de acciones *</label>
+        <input type="number" id="inputQty" placeholder="Ej: 10" min="0.001" step="any">
+      </div>
+      <div class="form-group">
+        <label>Precio de compra (€/$) *</label>
+        <input type="number" id="inputPrice" placeholder="Ej: 150.00" min="0" step="any">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Bolsa / Mercado</label>
+      <select id="inputMarket">
+        <option value="US">🇺🇸 EE.UU. (NYSE / NASDAQ)</option>
+        <option value="ES">🇪🇸 España (IBEX 35 / BME)</option>
+        <option value="EU">🇪🇺 Europa (Euronext)</option>
+        <option value="UK">🇬🇧 Reino Unido (LSE)</option>
+        <option value="JP">🇯🇵 Japón (TSE)</option>
+        <option value="CRYPTO">₿ Crypto</option>
+      </select>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="addPosition()">Añadir posición</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════
+// ESTADO DE LA APP
+// ═══════════════════════════════
+let positions = JSON.parse(localStorage.getItem('portfolio') || '[]');
+let prices = {};
+
+// Nombres de empresas conocidas
+const COMPANY_NAMES = {
+  'AAPL': 'Apple Inc.', 'MSFT': 'Microsoft Corp.', 'NVDA': 'NVIDIA Corp.',
+  'AMZN': 'Amazon.com Inc.', 'GOOGL': 'Alphabet Inc.', 'META': 'Meta Platforms',
+  'TSLA': 'Tesla Inc.', 'AVGO': 'Broadcom Inc.', 'PANW': 'Palo Alto Networks',
+  'JPM': 'JPMorgan Chase', 'V': 'Visa Inc.', 'MA': 'Mastercard Inc.',
+  'JNJ': 'Johnson & Johnson', 'PG': 'Procter & Gamble', 'HD': 'Home Depot',
+  'BAC': 'Bank of America', 'WMT': 'Walmart Inc.', 'DIS': 'Walt Disney Co.',
+  'NFLX': 'Netflix Inc.', 'AMD': 'AMD Inc.', 'INTC': 'Intel Corp.',
+  'GLD': 'SPDR Gold ETF', 'SPY': 'S&P 500 ETF', 'QQQ': 'NASDAQ 100 ETF',
+  'BTC': 'Bitcoin', 'ETH': 'Ethereum', 'XRP': 'Ripple',
+};
+
+// Colores para los íconos
+const ICON_COLORS = [
+  ['#1e3a5f','#3b82f6'], ['#1a3a2a','#22c55e'], ['#3a1a2a','#ec4899'],
+  ['#2a1a3a','#8b5cf6'], ['#3a2a1a','#f59e0b'], ['#1a2a3a','#06b6d4'],
+];
+
+// ═══════════════════════════════
+// OBTENER PRECIO VÍA API
+// ═══════════════════════════════
+async function fetchPrice(symbol) {
+  try {
+    const API_KEY = "PON_AQUI_TU_API_KEY";
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.twelvedata.com/time_series?symbol=${symbol}&interval=1day&outputsize=5&apikey=${API_KEY}`)}`;
+    const res = await fetch(proxyUrl);
+    const json = await res.json();
+    const data = JSON.parse(json.contents);
+
+    if (!data.values || data.values.length === 0) return null;
+
+    const values = data.values.reverse();
+    const closes = values.map(v => parseFloat(v.close));
+    const current = closes[closes.length - 1];
+    const prev = closes[closes.length - 2] || closes[0];
+    const change = current - prev;
+    const changePct = (change / prev) * 100;
+
+    return {
+      price: current,
+      change: change,
+      changePct: changePct,
+      history: closes
+    };
+  } catch(e) {
+    return null;
+  }
+}
+
+// ═══════════════════════════════
+// RENDERIZAR TABLA
+// ═══════════════════════════════
+function render() {
+  const tbody = document.getElementById('tableBody');
+  const empty = document.getElementById('emptyState');
+
+  if (positions.length === 0) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    updateSummary();
+    return;
+  }
+
+  empty.style.display = 'none';
+
+  tbody.innerHTML = positions.map((pos, i) => {
+    const priceData = prices[pos.symbol];
+    const currentPrice = priceData?.price || pos.buyPrice;
+    const currentValue = currentPrice * pos.qty;
+    const invested = pos.buyPrice * pos.qty;
+    const pl = currentValue - invested;
+    const plPct = (pl / invested) * 100;
+    const isPositive = pl >= 0;
+    const isLoading = !prices[pos.symbol];
+
+    const colorIdx = i % ICON_COLORS.length;
+    const [bg, fg] = ICON_COLORS[colorIdx];
+    const initials = pos.symbol.slice(0, 2);
+
+    const plClass = isLoading ? 'pl-neutral' : (isPositive ? 'pl-positive' : 'pl-negative');
+    const plSign = isPositive ? '+' : '';
+    const plIcon = isLoading ? '⏳' : (isPositive ? '▲' : '▼');
+
+    const changeClass = priceData?.changePct >= 0 ? 'green' : 'red';
+    const changeSign = priceData?.changePct >= 0 ? '+' : '';
+
+    // Mini sparkline
+    const spark = priceData?.history?.length > 1 ? generateSparkline(priceData.history, isPositive) : '';
+
+    const marketFlag = {US:'🇺🇸', ES:'🇪🇸', EU:'🇪🇺', UK:'🇬🇧', JP:'🇯🇵', CRYPTO:'₿'}[pos.market] || '🌍';
+
+    return `
+    <tr id="row-${i}">
+      <td>
+        <div class="stock-name">
+          <div class="stock-icon" style="background:linear-gradient(135deg,${bg},${bg}99);color:${fg}">${initials}</div>
+          <div>
+            <div class="stock-ticker">${pos.symbol} <span style="font-size:11px;color:var(--text3);font-weight:400">${marketFlag}</span></div>
+            <div class="stock-full">${pos.name || COMPANY_NAMES[pos.symbol] || pos.symbol}</div>
+          </div>
+        </div>
+      </td>
+      <td class="right">
+        ${isLoading
+          ? `<div class="spinner"></div>`
+          : `<div class="price-current">$${currentPrice.toFixed(2)}</div>
+             <div class="price-change ${changeClass}">${changeSign}${priceData?.changePct?.toFixed(2)}%</div>`
+        }
+      </td>
+      <td class="right hide-mobile mono">${pos.qty.toLocaleString('es-ES', {minimumFractionDigits: pos.qty % 1 === 0 ? 0 : 2})}</td>
+      <td class="right hide-mobile mono">$${invested.toFixed(2)}</td>
+      <td class="right mono">${isLoading ? '--' : '$'+currentValue.toFixed(2)}</td>
+      <td class="right">
+        <div class="pl-badge ${plClass}">
+          ${plIcon} ${isLoading ? '--' : `${plSign}$${Math.abs(pl).toFixed(2)}`}
+        </div>
+        <div style="font-size:11px;text-align:center;margin-top:3px;font-family:var(--mono);color:var(--text3)">
+          ${isLoading ? '' : `${plSign}${plPct.toFixed(2)}%`}
+        </div>
+      </td>
+      <td class="center hide-mobile">
+        ${spark}
+      </td>
+      <td class="center">
+        <button class="action-btn action-delete" onclick="deletePosition(${i})" title="Eliminar">🗑️</button>
+      </td>
+    </tr>`;
+  }).join('');
+
+  updateSummary();
+}
+
+// ═══════════════════════════════
+// SPARKLINE SVG
+// ═══════════════════════════════
+function generateSparkline(data, positive) {
+  const clean = data.filter(v => v != null);
+  if (clean.length < 2) return '';
+
+  const w = 80, h = 32, pad = 2;
+  const min = Math.min(...clean);
+  const max = Math.max(...clean);
+  const range = max - min || 1;
+
+  const points = clean.map((v, i) => {
+    const x = pad + (i / (clean.length - 1)) * (w - pad * 2);
+    const y = h - pad - ((v - min) / range) * (h - pad * 2);
+    return `${x},${y}`;
+  }).join(' ');
+
+  const color = positive ? '#22c55e' : '#ef4444';
+
+  return `<svg class="sparkline" viewBox="0 0 ${w} ${h}">
+    <polyline points="${points}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>
+  </svg>`;
+}
+
+// ═══════════════════════════════
+// RESUMEN TOTALES
+// ═══════════════════════════════
+function updateSummary() {
+  let totalInvested = 0;
+  let totalValue = 0;
+
+  positions.forEach(pos => {
+    const invested = pos.buyPrice * pos.qty;
+    const priceData = prices[pos.symbol];
+    const currentPrice = priceData?.price || pos.buyPrice;
+    const currentValue = currentPrice * pos.qty;
+    totalInvested += invested;
+    totalValue += currentValue;
+  });
+
+  const totalPL = totalValue - totalInvested;
+  const totalPLPct = totalInvested > 0 ? (totalPL / totalInvested) * 100 : 0;
+  const isPos = totalPL >= 0;
+
+  document.getElementById('totalInvested').textContent = '$' + totalInvested.toFixed(2);
+  document.getElementById('totalValue').textContent = '$' + totalValue.toFixed(2);
+  document.getElementById('totalValue').className = 'card-value ' + (isPos ? 'green' : 'red');
+
+  const plEl = document.getElementById('totalPL');
+  plEl.textContent = (isPos ? '+' : '') + '$' + totalPL.toFixed(2);
+  plEl.className = 'card-value ' + (isPos ? 'green' : 'red');
+
+  const plPctEl = document.getElementById('totalPLPct');
+  plPctEl.textContent = (isPos ? '+' : '') + totalPLPct.toFixed(2) + '%';
+  plPctEl.className = 'card-sub ' + (isPos ? 'green' : 'red');
+
+  document.getElementById('totalPositions').textContent = positions.length;
+}
+
+// ═══════════════════════════════
+// ACTUALIZAR PRECIOS
+// ═══════════════════════════════
+async function refreshAll() {
+  if (positions.length === 0) return;
+
+  const now = new Date();
+  document.getElementById('lastUpdate').textContent = now.toLocaleTimeString('es-ES');
+
+  const unique = [...new Set(positions.map(p => p.symbol))];
+
+  await Promise.all(unique.map(async symbol => {
+    const data = await fetchPrice(symbol);
+    if (data) prices[symbol] = data;
+  }));
+
+  render();
+  showToast('✅ Precios actualizados');
+}
+
+// ═══════════════════════════════
+// AÑADIR POSICIÓN
+// ═══════════════════════════════
+function openModal() {
+  document.getElementById('modal').style.display = 'flex';
+  document.getElementById('inputSymbol').focus();
+}
+
+function closeModal() {
+  document.getElementById('modal').style.display = 'none';
+  document.getElementById('inputSymbol').value = '';
+  document.getElementById('inputName').value = '';
+  document.getElementById('inputQty').value = '';
+  document.getElementById('inputPrice').value = '';
+}
+
+async function addPosition() {
+  const symbol = document.getElementById('inputSymbol').value.trim().toUpperCase();
+  const name = document.getElementById('inputName').value.trim();
+  const qty = parseFloat(document.getElementById('inputQty').value);
+  const price = parseFloat(document.getElementById('inputPrice').value);
+  const market = document.getElementById('inputMarket').value;
+
+  if (!symbol) { showToast('⚠️ Introduce el símbolo de la acción'); return; }
+  if (!qty || qty <= 0) { showToast('⚠️ Introduce una cantidad válida'); return; }
+  if (!price || price <= 0) { showToast('⚠️ Introduce un precio de compra válido'); return; }
+
+  positions.push({ symbol, name: name || COMPANY_NAMES[symbol] || symbol, qty, buyPrice: price, market, addedAt: new Date().toISOString() });
+  save();
+  closeModal();
+  render();
+
+  showToast(`⏳ Cargando precio de ${symbol}...`);
+  const data = await fetchPrice(symbol);
+  if (data) {
+    prices[symbol] = data;
+    render();
+    showToast(`✅ ${symbol} añadido a tu cartera`);
+  } else {
+    showToast(`⚠️ ${symbol} añadido (precio no disponible en demo)`);
+  }
+}
+
+// ═══════════════════════════════
+// ELIMINAR POSICIÓN
+// ═══════════════════════════════
+function deletePosition(i) {
+  const sym = positions[i].symbol;
+  positions.splice(i, 1);
+  save();
+  render();
+  showToast(`🗑️ ${sym} eliminado de tu cartera`);
+}
+
+// ═══════════════════════════════
+// GUARDAR
+// ═══════════════════════════════
+function save() {
+  localStorage.setItem('portfolio', JSON.stringify(positions));
+}
+
+// ═══════════════════════════════
+// TOAST
+// ═══════════════════════════════
+function showToast(msg) {
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+// ═══════════════════════════════
+// CERRAR MODAL AL CLICAR FUERA
+// ═══════════════════════════════
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// Enter para añadir
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+// ═══════════════════════════════
+// INIT
+// ═══════════════════════════════
+render();
+if (positions.length > 0) refreshAll();
+
+// Auto-refresh cada 60 segundos
+setInterval(() => {
+  if (positions.length > 0) refreshAll();
+}, 60000);
+</script>
+</body>
+</html>
