@@ -667,7 +667,7 @@ const ICON_COLORS = [
 // ═══════════════════════════════
 async function fetchPrice(symbol) {
   try {
-    const API_KEY = "PON_AQUI_TU_API_KEY";
+    const API_KEY = "22442aa8afe54a5981c0ddcd63ca6ee5";
     const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.twelvedata.com/time_series?symbol=${symbol}&interval=1day&outputsize=5&apikey=${API_KEY}`)}`;
     const res = await fetch(proxyUrl);
     const json = await res.json();
